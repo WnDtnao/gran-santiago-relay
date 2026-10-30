@@ -10,16 +10,20 @@ anfitrión de la sala (quien la crea) valida las jugadas.
 godot --headless --path . -s res://server/relay_server.gd -- --port=8910
 ```
 
-`data/online.json` apunta por defecto a `ws://127.0.0.1:8910`.
+y en `data/online.json` usar `"server_url": "ws://127.0.0.1:8910"` (o lanzar el juego con
+`-- --relay=ws://127.0.0.1:8910`).
 
-## Publicarlo en Internet
+## Publicado en Render (gratis)
 
-Cualquier hosting que ejecute un contenedor Docker con WebSockets sirve (Render,
-Fly.io, Railway, un VPS...). El servidor toma el puerto de la variable `PORT`.
+El relay se despliega desde un repositorio de GitHub que contiene solo esta carpeta
+(`git subtree split --prefix server`), con el `Dockerfile` y `render.yaml` de aquí.
 
-1. Crear el servicio desde esta carpeta (`server/`) usando el `Dockerfile`.
-2. El hosting entrega una dirección HTTPS, por ejemplo `https://gran-santiago-relay.onrender.com`.
-3. En `data/online.json` poner `"server_url": "wss://gran-santiago-relay.onrender.com"`
-   (`wss://` porque el hosting usa TLS; así también funciona desde la versión Web).
+- Plan gratuito: se apaga tras 15 minutos sin tráfico y tarda ~1 minuto en despertar.
+  El juego lo despierta al abrir "Jugar en línea" y reintenta la conexión mientras tanto.
+  Durante una partida los mensajes lo mantienen despierto.
+- Para actualizarlo después de cambiar `relay_server.gd`:
 
-Para probar otro servidor sin tocar el archivo: `godot --path . -- --relay=wss://...`.
+```
+git subtree split --prefix server -b relay
+git push relay relay:main
+```

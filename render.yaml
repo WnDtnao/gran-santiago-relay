@@ -1,0 +1,10 @@
+# Blueprint de Render (https://render.com/docs/blueprint-spec): un servicio web
+# gratuito con el relay. Render entrega una dirección https://<nombre>.onrender.com;
+# el juego se conecta a wss://<nombre>.onrender.com (data/online.json).
+services:
+  - type: web
+    name: gran-santiago-relay
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    autoDeploy: true
